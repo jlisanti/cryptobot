@@ -53,6 +53,8 @@ func Order(client *coinbasepro.Client, request TransactionRequest) (orderID stri
 		println(err.Error())
 	}
 
+	fmt.Printf("Current price: $%s \n", lastPrice)
+
 	fmt.Println(book)
 
 	order := coinbasepro.Order{
