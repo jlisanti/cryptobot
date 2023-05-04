@@ -39,9 +39,44 @@ func Print(client *coinbasepro.Client) {
 	for _, a := range accounts {
 		println(a.Currency, a.Balance)
 	}
+
+	var orders []coinbasepro.Order
+
+	fmt.Println("Printing open orders...")
+	for _, o := range orders {
+		fmt.Println(o.ID, o.CreatedAt.Time())
+	}
+
+	fmt.Println("Finished printing open orders")
+	transfer := coinbasepro.Transfer{
+		Type:   "deposit",
+		Amount: "1000.00",
+	}
+
+	savedTransfer, err := client.CreateTransfer(&transfer)
+	if err != nil {
+		println(err.Error())
+	}
+	println(savedTransfer.Amount)
+
 }
 
 func Order(client *coinbasepro.Client, request TransactionRequest) (orderID string) {
+
+	var orders []coinbasepro.Order
+	//cursor := client.ListOrders()
+
+	//fmt.Println("Canceling open orders...")
+	//for _, o := range orders {
+	//	client.CancelOrder(o.ID)
+	//	}
+
+	fmt.Println("Printing open orders...")
+	for _, o := range orders {
+		fmt.Println(o.ID, o.CreatedAt.Time())
+	}
+
+	fmt.Println("Finished printing open orders")
 
 	book, err := client.GetBook("BTC-USD", 1)
 	if err != nil {
@@ -55,13 +90,18 @@ func Order(client *coinbasepro.Client, request TransactionRequest) (orderID stri
 
 	fmt.Printf("Current price: $%s \n", lastPrice)
 
-	fmt.Println(book)
+	//order := coinbasepro.Order{
+	//	Price:     lastPrice.Add(decimal.NewFromFloat(1.00)).String(),
+	//Size:      request.Size,
+	//Side:      request.Side,
+	//ProductID: request.ProductID,
+	//}
 
 	order := coinbasepro.Order{
 		Price:     lastPrice.Add(decimal.NewFromFloat(1.00)).String(),
-		Size:      request.Size,
-		Side:      request.Side,
-		ProductID: request.ProductID,
+		Size:      "0.00005",
+		Side:      "buy",
+		ProductID: "BTC-USD",
 	}
 
 	savedOrder, err := client.CreateOrder(&order)

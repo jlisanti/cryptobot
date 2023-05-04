@@ -81,6 +81,8 @@ func connect() {
 		buyPrompt(client)
 	} else if action == "sell" {
 		sellPrompt(client)
+	} else if action == "track" {
+		cryptobot.Track(client)
 	}
 }
 
@@ -151,7 +153,7 @@ func sellPrompt(client *coinbasepro.Client) {
 
 	sellQuantityPromptContent := promptContent{
 		"Enter sell quantity",
-		"Purchase amount: ",
+		"Sell amount: ",
 	}
 	size := promptGetInput(sellQuantityPromptContent)
 	sellRequest.Size = strings.ReplaceAll(size, " ", "")
